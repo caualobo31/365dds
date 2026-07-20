@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>365 DDS Prontos — Abre no celular e lê. Um DDS pra cada dia do ano.</title>
+<meta name="description" content="365 Diálogos Diários de Segurança prontos pra ler em voz alta. Não é lista de tema, é o texto pronto. Abre no celular, funciona sem internet, já mostra o DDS de hoje.">
+<meta property="og:title" content="365 DDS Prontos — Abre no celular e lê">
+<meta property="og:description" content="Não é lista de tema. É o texto pronto pra ler em voz alta. Um DDS pra cada dia do ano.">
+<meta property="og:image" content="/images/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============ TOKENS ============ */
+:root{
+  /* Código de cores de segurança (NR-26 / ABNT NBR 7195) */
+  --amarelo:#F7C600;      /* cuidado */
+  --verde:#1E8A4C;        /* segurança */
+  --vermelho:#D6301F;     /* perigo */
+  --grafite:#14161A;      /* aço pintado */
+  --aco:#20242C;
+  --aco-linha:#333945;
+  --concreto:#E9E7E2;
+  --concreto-linha:#CFCCC4;
+  --branco:#FFFFFF;
+  --texto-fraco:#9199A5;
+  --texto-fraco-claro:#6B6862;
+
+  --display:'Barlow Condensed',system-ui,sans-serif;
+  --corpo:'Barlow',system-ui,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+
+  --faixa:repeating-linear-gradient(45deg,var(--amarelo) 0 14px,var(--grafite) 14px 28px);
+  --raio:4px;
+  --pad:clamp(20px,5vw,28px);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--grafite);color:var(--branco);
+  font-family:var(--corpo);font-size:17px;line-height:1.55;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  text-align:center;
+}
+img{max-width:100%;display:block}
+a{color:inherit}
+
+/* ============ ESTRUTURA ============ */
+.wrap{max-width:640px;margin:0 auto;padding-left:var(--pad);padding-right:var(--pad)}
+.sec{padding:56px 0}
+.sec--claro{background:var(--concreto);color:var(--grafite)}
+.sec--aco{background:var(--aco)}
+.faixa{height:10px;background:var(--faixa)}
+
+/* ============ TIPOGRAFIA ============ */
+.eyebrow{
+  font-family:var(--mono);font-size:11px;font-weight:600;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--amarelo);
+  margin-bottom:14px;display:block;
+}
+.sec--claro .eyebrow{color:var(--grafite);opacity:.55}
+h1,h2,h3{font-family:var(--display);text-transform:uppercase;line-height:.94;letter-spacing:-.01em}
+h1{font-size:clamp(30px,7.6vw,48px);font-weight:800}
+h2{font-size:clamp(29px,6.8vw,42px);font-weight:800;margin-bottom:16px}
+h3{font-size:19px;font-weight:700;letter-spacing:.01em}
+.lead{font-size:18px;color:var(--texto-fraco)}
+.sec--claro .lead{color:var(--texto-fraco-claro)}
+.destaque{color:var(--amarelo)}
+
+/* ============ BOTÃO ============ */
+.cta{
+  display:block;width:100%;text-align:center;text-decoration:none;
+  background:var(--amarelo);color:var(--grafite);
+  font-family:var(--display);font-size:23px;font-weight:800;
+  text-transform:uppercase;letter-spacing:.02em;
+  padding:19px 20px;border:0;border-radius:var(--raio);cursor:pointer;
+  box-shadow:0 4px 0 #B89400;transition:transform .08s ease,box-shadow .08s ease;
+}
+.cta:active{transform:translateY(4px);box-shadow:0 0 0 #B89400}
+.cta-nota{
+  font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  text-align:center;color:var(--texto-fraco);margin-top:12px;
+}
+.sec--claro .cta-nota{color:var(--texto-fraco-claro)}
+
+/* ============ SELOS ============ */
+.selos{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:16px}
+.selo{
+  display:flex;align-items:center;gap:6px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--texto-fraco);border:1px solid var(--aco-linha);
+  border-radius:var(--raio);padding:6px 10px;
+}
+.sec--claro .selo{color:var(--texto-fraco-claro);border-color:var(--concreto-linha)}
+.selo svg{width:13px;height:13px;stroke:var(--verde);flex-shrink:0}
+
+/* ============ LISTA DE CHECK (usada nos planos) ============ */
+.check{list-style:none}
+.check li{display:flex;gap:10px;align-items:center;justify-content:center;padding:8px 0;font-size:16px;text-align:left}
+.check li svg{width:17px;height:17px;stroke:var(--verde);flex-shrink:0;margin-top:4px}
+
+/* ============ PLACEHOLDER ============ */
+.ph{
+  border:2px dashed var(--amarelo);border-radius:var(--raio);
+  background:rgba(247,198,0,.05);
+  padding:28px 18px;text-align:center;
+  font-family:var(--mono);font-size:11px;line-height:1.7;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--amarelo);
+}
+.sec--claro .ph{background:rgba(20,22,26,.03);border-color:var(--grafite);color:var(--grafite);opacity:.7}
+
+/* ============ 1-5 HERÓI ============ */
+.heroi{padding:36px 0 52px;position:relative}
+.heroi::before{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(247,198,0,.10),transparent 70%);
+  pointer-events:none;
+}
+.heroi .wrap{position:relative}
+.heroi h1{margin-bottom:16px}
+.heroi .lead{margin-bottom:28px;font-size:19px;color:#C6CCD5}
+.heroi .lead b{color:var(--branco);font-weight:600}
+
+/* Mockup do app */
+.heroi-mockup{width:100%;max-width:480px;height:auto;aspect-ratio:1448/1086;margin:0 auto 30px}
+
+/* ============ 6 PROVA SOCIAL ============ */
+.prova-num{text-align:center}
+.prova-num .num{
+  font-family:var(--display);font-size:clamp(46px,12vw,64px);font-weight:800;
+  color:var(--amarelo);line-height:1;
+}
+.prova-num .rot{
+  font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--texto-fraco);margin-top:6px;
+}
+
+/* ============ 7 BARRA DE BENEFÍCIOS ============ */
+.barra{background:var(--amarelo);color:var(--grafite);padding:34px 0}
+.barra-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.barra-item{display:flex;gap:9px;align-items:center;justify-content:center}
+.barra-item svg{width:19px;height:19px;stroke:var(--grafite);flex-shrink:0;margin-top:2px}
+.barra-item span{font-family:var(--display);font-size:16.5px;font-weight:700;text-transform:uppercase;line-height:1.1;text-align:left}
+
+/* ============ 8 DDS GRÁTIS ============ */
+.dds{
+  background:var(--branco);border:2px solid var(--grafite);border-radius:var(--raio);
+  box-shadow:6px 6px 0 var(--grafite);overflow:hidden;margin-bottom:22px;
+}
+.dds-topo{background:var(--faixa);height:9px}
+.dds-meta{
+  display:flex;flex-wrap:wrap;gap:7px;padding:15px 18px 0;justify-content:center;
+}
+.dds-meta span{
+  font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.09em;text-transform:uppercase;
+  border:1px solid var(--concreto-linha);border-radius:2px;padding:3px 7px;color:#5D5A55;
+}
+.dds-corpo{padding:13px 18px 22px;text-align:left}
+.dds-corpo h3{font-size:23px;margin-bottom:14px;line-height:1}
+.dds-bloco{margin-bottom:15px}
+.dds-bloco:last-child{margin-bottom:0}
+.dds-rot{
+  font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--grafite);background:var(--amarelo);display:inline-block;padding:2px 6px;border-radius:2px;margin-bottom:6px;
+}
+.dds-bloco p{font-size:13.5px;line-height:1.55;color:#25282D}
+.dds-bloco p:not(:last-child){margin-bottom:9px}
+.dds-bloco b{font-weight:700}
+
+.dds-citacoes,.dds-lista{list-style:none;margin:9px 0}
+.dds-citacoes li,.dds-lista li{font-size:13.5px;line-height:1.5;color:#25282D;padding-left:15px;position:relative;margin-bottom:5px}
+.dds-citacoes li:last-child,.dds-lista li:last-child{margin-bottom:0}
+.dds-citacoes li{font-style:italic}
+.dds-citacoes li::before{content:"—";position:absolute;left:0;color:#9A968D}
+.dds-lista li::before{content:"•";position:absolute;left:0;color:var(--amarelo)}
+
+.dds-tagline{
+  margin-top:16px;padding-top:14px;border-top:1px solid var(--concreto-linha);
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#5D5A55;
+}
+.dds-tagline svg{width:13px;height:13px;stroke:var(--verde);flex-shrink:0}
+
+.dds-conteudo{position:relative;max-height:340px;overflow:hidden}
+.dds-conteudo::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:90px;
+  background:linear-gradient(to bottom,rgba(255,255,255,0),var(--branco));
+  pointer-events:none;
+}
+.dds-corpo.aberto .dds-conteudo{max-height:none}
+.dds-corpo.aberto .dds-conteudo::after{display:none}
+.dds-ver-mais{
+  display:flex;align-items:center;justify-content:center;gap:6px;width:100%;
+  margin-top:16px;padding:12px;border:1px solid var(--concreto-linha);border-radius:var(--raio);
+  background:var(--branco);cursor:pointer;
+  font-family:var(--display);font-size:15px;font-weight:700;text-transform:uppercase;letter-spacing:.02em;color:var(--grafite);
+}
+.dds-ver-mais svg{width:15px;height:15px;stroke:var(--grafite);flex-shrink:0;transition:transform .2s ease}
+.dds-corpo.aberto .dds-ver-mais svg{transform:rotate(180deg)}
+
+/* ============ 9 FUTURO ============ */
+.futuro-lista{list-style:none;counter-reset:f}
+.futuro-lista li{
+  counter-increment:f;display:flex;gap:14px;align-items:center;justify-content:center;
+  padding:16px 0;border-bottom:1px solid var(--aco-linha);
+}
+.futuro-lista li:last-child{border-bottom:0}
+.futuro-lista li::before{
+  content:counter(f,decimal-leading-zero);
+  font-family:var(--mono);font-size:12px;font-weight:600;color:var(--amarelo);
+  padding-top:4px;flex-shrink:0;
+}
+.futuro-lista p{font-family:var(--display);font-size:22px;font-weight:600;text-transform:uppercase;line-height:1.08;text-align:left}
+
+/* ============ LARGURA AMPLIADA (seções 10 e 11-12) ============ */
+.wrap.wrap--largo{max-width:1140px}
+.medida-texto{max-width:640px;margin:0 auto}
+.cta-bloco{max-width:420px;margin:0 auto}
+.frase-impacto{
+  font-family:var(--display);font-size:clamp(20px,4.2vw,26px);font-weight:700;text-transform:uppercase;
+  line-height:1.18;text-align:center;max-width:680px;margin:28px auto 24px;
+}
+.sec--claro .frase-impacto{color:var(--grafite)}
+
+/* ============ 10 A DIFERENÇA ============ */
+.headline-highlight{
+  background:var(--amarelo);color:var(--grafite);
+  padding:2px 9px;border-radius:4px;
+  box-decoration-break:clone;-webkit-box-decoration-break:clone;
+}
+/* headlines com destaque precisam de mais espaço entre linhas, senão o fundo amarelo se toca */
+.headline-arejada{line-height:1.22}
+
+.placa{border:2px solid var(--grafite);border-radius:var(--raio);overflow:hidden;margin:26px 0;background:var(--branco)}
+.placa-cab{display:grid;grid-template-columns:1fr 1fr;background:var(--grafite)}
+.placa-cab div{
+  font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+  padding:13px 12px;color:var(--texto-fraco);display:flex;align-items:center;gap:6px;
+}
+.placa-cab div svg{width:13px;height:13px;flex-shrink:0}
+.placa-cab div:first-child svg{stroke:var(--texto-fraco)}
+.placa-cab div:last-child{color:var(--amarelo);background:rgba(247,198,0,.1);border-left:1px solid #3A414F}
+.placa-cab div:last-child svg{stroke:var(--amarelo)}
+.placa-linha{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--concreto-linha)}
+.placa-linha:first-of-type{border-top:0}
+.placa-col{padding:14px 12px;font-size:16px;line-height:1.4;display:flex;gap:8px;align-items:flex-start;text-align:left}
+.placa-col svg{width:15px;height:15px;flex-shrink:0;margin-top:2px}
+.placa-col--fraca{color:#847F76;background:#F5F3EF}
+.placa-col--fraca svg{stroke:#B2AC9F}
+.placa-col--forte{color:var(--grafite);font-weight:600;background:#FFFCF2;border-left:1px solid var(--concreto-linha)}
+.placa-col--forte svg{stroke:var(--verde)}
+@media(max-width:389px){
+  .placa-linha{grid-template-columns:1fr}
+  .placa-col--forte{border-left:0;border-top:1px dashed var(--concreto-linha)}
+}
+
+/* ============ 11-12 TUDO QUE VOCÊ RECEBE ============ */
+.entrega-principal{display:flex;flex-direction:column;gap:28px;margin-top:26px}
+@media(min-width:760px){.entrega-principal{flex-direction:row;align-items:flex-start;gap:44px}}
+
+.app-fone{
+  flex:0 0 auto;width:100%;max-width:280px;margin:0 auto;
+  background:var(--grafite);border:3px solid #3A414F;border-radius:22px;
+  padding:8px;box-shadow:0 20px 50px rgba(0,0,0,.5);
+}
+.app-tela{background:#0E1013;border-radius:15px;overflow:hidden}
+.app-topo{background:var(--faixa);height:6px}
+.app-corpo{padding:14px 13px 17px}
+.app-data{
+  font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--texto-fraco);display:flex;justify-content:space-between;margin-bottom:10px;
+}
+.app-tag{
+  display:inline-block;background:var(--amarelo);color:var(--grafite);
+  font-family:var(--mono);font-size:8.5px;font-weight:600;letter-spacing:.1em;
+  padding:3px 6px;border-radius:2px;margin-bottom:8px;
+}
+.app-titulo{font-family:var(--display);font-size:21px;font-weight:800;text-transform:uppercase;line-height:.98;margin-bottom:10px;color:var(--branco)}
+.app-secoes p{font-size:10.5px;line-height:1.45;color:#B9C0CB;margin-bottom:7px}
+.app-secoes p:last-child{margin-bottom:0}
+.app-secoes b{
+  font-family:var(--mono);font-size:8px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--amarelo);display:block;margin-bottom:2px;
+}
+.app-btn{
+  margin-top:12px;background:var(--verde);color:#fff;border-radius:3px;
+  font-family:var(--display);font-size:12px;font-weight:700;text-transform:uppercase;
+  text-align:center;padding:8px;letter-spacing:.03em;
+}
+
+.entrega-info{flex:1;text-align:left;min-width:0}
+.entrega-tag{
+  display:inline-block;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--grafite);background:var(--amarelo);padding:4px 9px;border-radius:2px;margin-bottom:12px;
+}
+.entrega-info h3{font-size:clamp(24px,4vw,30px);color:var(--branco);margin-bottom:12px}
+.entrega-intro{font-size:16px;line-height:1.55;color:#C6CCD5;margin-bottom:24px}
+
+.feat-lista{border-top:1px solid var(--aco-linha)}
+.feat-item{display:flex;gap:14px;align-items:flex-start;padding:16px 0;border-bottom:1px solid var(--aco-linha)}
+.feat-num{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--amarelo);flex-shrink:0;padding-top:3px}
+.feat-item b{font-family:var(--display);font-size:17px;font-weight:700;text-transform:uppercase;letter-spacing:.01em;display:block;margin-bottom:4px;color:var(--branco)}
+.feat-item p{font-size:16px;line-height:1.5;color:#AEB4BD}
+
+.bonus-transicao{text-align:center;margin:40px auto 22px;max-width:560px}
+.bonus-transicao h3{font-size:22px;color:var(--branco);margin-bottom:8px}
+.bonus-transicao p{font-size:16px;color:var(--texto-fraco)}
+
+.bonus-grid{display:grid;grid-template-columns:1fr;gap:16px}
+@media(min-width:640px){.bonus-grid{grid-template-columns:1fr 1fr}}
+@media(min-width:900px){.bonus-grid{grid-template-columns:1fr 1fr 1fr}}
+
+.bonus2{
+  background:var(--aco);border:1px solid var(--aco-linha);border-radius:var(--raio);
+  padding:20px;text-align:left;display:flex;flex-direction:column;gap:10px;
+}
+.bonus2-topo{display:flex;align-items:flex-start;justify-content:space-between}
+.bonus2-num{font-family:var(--display);font-size:32px;font-weight:800;color:#3A414F;line-height:1}
+.bonus2-icone{width:22px;height:22px;stroke:var(--amarelo);flex-shrink:0;margin-top:4px}
+.bonus2 h3{font-size:17px;line-height:1.2;color:var(--branco)}
+.bonus2 p{font-size:16px;line-height:1.55;color:#AEB4BD;flex-grow:1}
+.bonus2-etiqueta{
+  align-self:flex-start;font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--grafite);background:var(--amarelo);padding:4px 8px;border-radius:2px;
+}
+
+/* ============ 13 DEPOIMENTOS ============ */
+.depo-carrossel{
+  position:relative;overflow:hidden;margin-top:24px;padding:4px 0 8px;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);
+}
+.depo-trilho{display:flex;gap:16px;width:max-content;padding:0 var(--pad);animation:depo-rolar 32s linear infinite}
+.depo-carrossel:hover .depo-trilho,.depo-carrossel.pausado .depo-trilho{animation-play-state:paused}
+@keyframes depo-rolar{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.depo-card{
+  flex:0 0 260px;background:var(--branco);border:1px solid var(--concreto-linha);
+  border-radius:var(--raio);padding:18px;text-align:left;
+}
+.depo-card p{font-size:14px;line-height:1.5;color:#25282D;margin-bottom:14px}
+.depo-quem{
+  display:flex;flex-direction:column;gap:2px;
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:#7C7973;
+  border-top:1px solid var(--concreto-linha);padding-top:10px;
+}
+.depo-quem b{color:var(--grafite);font-size:11.5px;letter-spacing:.03em}
+.depo-pausa{
+  position:absolute;top:-2px;right:var(--pad);z-index:1;
+  background:var(--grafite);color:var(--branco);border:0;border-radius:2px;cursor:pointer;
+  font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:5px 10px;
+}
+
+/* ============ 14 TIMER ============ */
+.timer{
+  background:var(--grafite);border:2px solid var(--vermelho);border-radius:var(--raio);
+  padding:20px;text-align:center;
+}
+.timer .rot{
+  font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--vermelho);margin-bottom:8px;
+}
+.timer .conta{font-family:var(--display);font-size:46px;font-weight:800;line-height:1;letter-spacing:.02em}
+.timer .txt{font-size:15px;color:var(--texto-fraco);margin-top:8px}
+
+/* ============ 15 PREÇO ============ */
+.plano{
+  background:var(--branco);border:2px solid var(--grafite);border-radius:var(--raio);
+  padding:22px;margin-bottom:16px;
+}
+.plano--top{box-shadow:7px 7px 0 var(--amarelo);position:relative}
+.plano h3{font-size:26px;margin-bottom:3px}
+.plano-sub{font-family:var(--mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:#7C7973;margin-bottom:16px}
+.plano-valor{display:flex;align-items:baseline;justify-content:center;gap:9px;margin-bottom:2px}
+.plano-valor .v{font-family:var(--display);font-size:52px;font-weight:800;line-height:1}
+.plano-cond{font-family:var(--mono);font-size:11.5px;color:#7C7973;margin-bottom:18px}
+.plano .check li{color:var(--grafite)}
+.plano .check{margin-bottom:18px}
+.ancora{
+  font-size:15px;color:var(--texto-fraco-claro);text-align:center;
+  border-top:1px solid var(--concreto-linha);padding-top:16px;margin-top:4px;
+}
+
+/* ============ 16 GARANTIA ============ */
+.garantia{border:2px solid var(--verde);border-radius:var(--raio);padding:24px;text-align:center}
+.garantia svg{width:38px;height:38px;stroke:var(--verde);margin:0 auto 12px}
+.garantia h2{font-size:28px;margin-bottom:10px}
+.garantia p{color:var(--texto-fraco);font-size:16px}
+.garantia .forte{color:var(--verde);font-weight:700;font-family:var(--display);font-size:21px;text-transform:uppercase;display:block;margin-top:12px}
+
+/* ============ 17 FAQ ============ */
+.faq{border-top:1px solid var(--concreto-linha)}
+.faq details{border-bottom:1px solid var(--concreto-linha)}
+.faq summary{
+  cursor:pointer;list-style:none;padding:17px 30px 17px 0;position:relative;
+  font-family:var(--display);font-size:19px;font-weight:700;text-transform:uppercase;line-height:1.15;
+}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{
+  content:"+";position:absolute;right:2px;top:14px;
+  font-family:var(--mono);font-size:21px;color:var(--amarelo);
+  background:var(--grafite);width:23px;height:23px;line-height:23px;text-align:center;border-radius:2px;
+}
+.faq details[open] summary::after{content:"–"}
+.faq details p{padding:0 0 17px;font-size:16px;line-height:1.6;color:var(--texto-fraco-claro)}
+
+/* ============ 18-19 FECHO ============ */
+.fecho{background:var(--amarelo);color:var(--grafite);padding:52px 0;text-align:center}
+.fecho h2{margin-bottom:8px}
+.fecho p{margin-bottom:24px;font-size:17px}
+.fecho .cta{background:var(--grafite);color:var(--amarelo);box-shadow:0 4px 0 #000}
+.rodape{padding:30px 0;text-align:center}
+.rodape p{font-family:var(--mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--texto-fraco)}
+.rodape nav{margin-top:10px;display:flex;gap:16px;justify-content:center}
+.rodape nav a{font-family:var(--mono);font-size:11px;color:var(--texto-fraco);text-decoration:none;letter-spacing:.06em;text-transform:uppercase}
+.rodape nav a:hover{color:var(--amarelo)}
+
+/* ============ A11Y / RESPONSIVO ============ */
+a:focus-visible,summary:focus-visible,button:focus-visible{outline:3px solid var(--amarelo);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto}}
+@media (max-width:380px){
+  .barra-grid{grid-template-columns:1fr}
+  .comp-linha div,.comp-cab div{padding:11px 9px;font-size:14px}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ 1-5 · HERÓI ═══ -->
+<header class="heroi">
+  <div class="wrap">
+    <h1 class="headline-arejada">365 DDS completos para trocar o improviso diário por <span class="headline-highlight">uma fala pronta e organizada</span></h1>
+    <p class="lead">Abre no celular, e lê em qualquer lugar. <b>Não é lista solta. É o texto completo para cada dia.</b></p>
+
+    <img class="heroi-mockup" src="images/mockup.png" width="1448" height="1086" alt="365 DDS Prontos: celular mostrando o DDS do dia, o livro 365 DDS Prontos e cards de exemplo de diálogos de segurança">
+
+    <a href="#preco" class="cta">Quero meu DDS pronto</a>
+    <p class="cta-nota">Acesso imediato · Funciona sem internet</p>
+  </div>
+</header>
+
+<div class="faixa"></div>
+
+<!-- ═══ 7 · BARRA DE MICRO-BENEFÍCIOS ═══ -->
+<section class="barra">
+  <div class="wrap barra-grid">
+    <div class="barra-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h.01"/><path d="M8.5 16.429a5 5 0 0 1 7 0"/><path d="M5 12.859a10 10 0 0 1 5.17-2.69"/><path d="M19 12.859a10 10 0 0 0-2.007-1.523"/><path d="M2 8.82a15 15 0 0 1 4.177-2.643"/><path d="M22 8.82a15 15 0 0 0-11.288-3.764"/><path d="m2 2 20 20"/></svg>
+      <span>Funciona sem internet</span>
+    </div>
+    <div class="barra-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <span>Abre já no DDS de hoje</span>
+    </div>
+    <div class="barra-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span>Lê em 5 minutos</span>
+    </div>
+    <div class="barra-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4M16 2v4M3 10h18"/><rect x="3" y="4" width="18" height="18" rx="2"/></svg>
+      <span>365 dias cobertos</span>
+    </div>
+    <div class="barra-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/><path d="m9 14 2 2 4-4"/></svg>
+      <span>Lista de presença junto</span>
+    </div>
+    <div class="barra-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg>
+      <span>Versão pra imprimir</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 8 · VEJA O MATERIAL POR DENTRO ═══ -->
+<section class="sec sec--claro">
+  <div class="wrap">
+    <span class="eyebrow">Veja o material por dentro</span>
+    <h2>Veja um dos 365 DDS completo</h2>
+    <p class="lead" style="margin-bottom:26px">Sem resumo e sem amostra cortada. Leia agora exatamente como ele seria conduzido diante da equipe.</p>
+
+    <article class="dds">
+      <div class="dds-topo"></div>
+      <div class="dds-meta">
+        <span>DDS 073/365</span><span>Todos os setores</span><span>10 minutos</span>
+      </div>
+      <div class="dds-corpo">
+        <h3>O atalho de 3 minutos</h3>
+
+        <div class="dds-conteudo" id="ddsConteudo">
+        <div class="dds-bloco">
+          <span class="dds-rot">Abertura</span>
+          <p>Antes de começar, levanta a mão quem já pensou alguma destas frases durante o trabalho:</p>
+          <ul class="dds-citacoes">
+            <li>"É rapidinho."</li>
+            <li>"Só dessa vez."</li>
+            <li>"Eu sempre fiz assim."</li>
+            <li>"Não vai acontecer nada."</li>
+          </ul>
+          <p>Essas frases parecem inofensivas, mas quase todo atalho inseguro começa desse jeito. A pessoa não acorda pensando em provocar um acidente. Ela só quer terminar mais rápido, evitar uma caminhada, não interromper a operação ou não pedir ajuda.</p>
+          <p>O problema é que o risco não diminui porque a tarefa vai durar poucos segundos.</p>
+          <p>Hoje nós vamos falar sobre aqueles três minutos que alguém tenta economizar — e que podem custar dias, meses ou até uma vida inteira.</p>
+        </div>
+
+        <div class="dds-bloco">
+          <span class="dds-rot">O caso</span>
+          <p>Imagine a seguinte situação.</p>
+          <p>Uma equipe precisava finalizar uma atividade antes da troca de turno. Durante a conferência, um trabalhador percebeu que havia uma etiqueta solta na parte superior de uma estrutura.</p>
+          <p>A escada adequada estava guardada em outro ponto da área. Para buscá-la, ele teria que interromper o que estava fazendo, andar alguns minutos e depois posicioná-la corretamente.</p>
+          <p>Como faltava pouco para terminar, ele decidiu subir sobre um palete.</p>
+          <p>Um colega ainda comentou:</p>
+          <ul class="dds-citacoes"><li>"Espera aí que eu vou buscar a escada."</li></ul>
+          <p>Mas ele respondeu:</p>
+          <ul class="dds-citacoes"><li>"Não precisa. É só prender a etiqueta e descer."</li></ul>
+          <p>Ao subir, o palete se movimentou. O trabalhador perdeu o equilíbrio e caiu.</p>
+          <p>A atividade que levaria poucos segundos foi interrompida. A área precisou ser isolada, a liderança foi acionada, o trabalhador precisou receber atendimento e toda a equipe parou.</p>
+          <p>O ponto principal não é a altura da queda nem o tipo de lesão. O ponto é a decisão tomada antes dela.</p>
+          <p>A escada existia. O risco era conhecido. Havia uma maneira correta de fazer.</p>
+          <p>Mesmo assim, a pressa transformou uma opção segura em uma escolha improvisada.</p>
+        </div>
+
+        <div class="dds-bloco">
+          <span class="dds-rot">A regra de hoje</span>
+          <p><b>Se o jeito seguro de fazer não está disponível, a tarefa ainda não está pronta para começar.</b></p>
+          <ul class="dds-lista">
+            <li>Buscar a ferramenta correta não é perda de tempo.</li>
+            <li>Isolar a área não é exagero.</li>
+            <li>Pedir ajuda não é sinal de incapacidade.</li>
+            <li>Interromper uma atividade insegura não é atrasar a produção.</li>
+          </ul>
+          <p>Tudo isso faz parte do trabalho.</p>
+          <p>Quando alguém improvisa, normalmente está trocando um ganho pequeno por um risco muito maior. Economiza três minutos, mas aumenta a possibilidade de queda, corte, prensamento, colisão, choque, dano ao equipamento ou afastamento.</p>
+          <p>O atalho é perigoso justamente porque ele costuma funcionar várias vezes. A pessoa sobe onde não deveria e nada acontece. Usa a ferramenta errada e consegue terminar. Deixa de fazer uma checagem e o equipamento funciona normalmente.</p>
+          <p>Depois de repetir isso algumas vezes, ela começa a acreditar que o improviso é seguro. <b>Mas não é.</b> Ela apenas teve várias oportunidades em que o acidente ainda não aconteceu.</p>
+          <p>Experiência não elimina o risco. Costume também não transforma uma prática errada em uma prática segura.</p>
+        </div>
+
+        <div class="dds-bloco">
+          <span class="dds-rot">Pergunta pra turma</span>
+          <p>Agora pensa na nossa rotina. <b>Qual é o atalho mais comum aqui quando a equipe está com pressa?</b></p>
+          <p>Pode ser:</p>
+          <ul class="dds-lista">
+            <li>subir onde não deveria;</li>
+            <li>usar uma ferramenta improvisada;</li>
+            <li>atravessar fora da rota segura;</li>
+            <li>deixar de bloquear ou sinalizar uma área;</li>
+            <li>movimentar uma carga sem conferir;</li>
+            <li>retirar uma proteção;</li>
+            <li>deixar de usar um equipamento de proteção;</li>
+            <li>executar sozinho uma tarefa que exige apoio;</li>
+            <li>começar sem verificar as condições do local.</li>
+          </ul>
+          <p>Escolham um exemplo que realmente acontece ou que poderia acontecer na nossa operação. O que normalmente leva alguém a usar esse atalho?</p>
+          <ul class="dds-lista">
+            <li>É pressão para terminar?</li>
+            <li>É dificuldade para encontrar o recurso correto?</li>
+            <li>É excesso de confiança?</li>
+            <li>É receio de chamar a liderança?</li>
+            <li>Ou é simplesmente o costume de fazer sempre do mesmo jeito?</li>
+          </ul>
+          <p><b>E agora a pergunta mais importante:</b> o que nós podemos mudar ainda hoje para que esse atalho deixe de acontecer?</p>
+          <p>Não precisa ser uma mudança grande. Pode ser deixar uma ferramenta mais acessível, corrigir uma sinalização, combinar um procedimento ou avisar imediatamente quando faltar algum recurso necessário.</p>
+        </div>
+
+        <div class="dds-bloco">
+          <span class="dds-rot">Fechamento</span>
+          <p>Nenhum minuto economizado compensa um acidente. Nenhuma entrega é tão urgente que justifique alguém se colocar em risco.</p>
+          <p>Se a tarefa exige improviso, ela exige uma pausa. Pare, avalie, busque o recurso correto e peça apoio quando for necessário.</p>
+          <p>Antes de começar qualquer atividade hoje, faça esta pergunta:</p>
+          <ul class="dds-citacoes"><li>"Estou fazendo do jeito seguro ou apenas do jeito mais rápido?"</li></ul>
+          <p>Porque segurança não é o que fazemos quando sobra tempo. <b>Segurança é o jeito certo de começar.</b></p>
+        </div>
+
+        <div class="dds-tagline">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Segurança não é sorte. É escolha.
+        </div>
+        </div>
+
+        <button class="dds-ver-mais" id="ddsVerMais" type="button" aria-expanded="false" aria-controls="ddsConteudo">
+          <span id="ddsVerMaisTexto">Ver DDS completo</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ═══ 9 · O DEPOIS ═══ -->
+<section class="sec">
+  <div class="wrap">
+    <span class="eyebrow">O que muda a partir de amanhã</span>
+    <h2>Sua manhã fica assim depois disso</h2>
+    <ol class="futuro-lista">
+      <li><p>Chegar na roda sem aquele frio na barriga</p></li>
+      <li><p>Ler cinco minutos e ver a turma responder de verdade</p></li>
+      <li><p>Nunca mais repetir tema porque não lembrou de outro</p></li>
+      <li><p>Ter a lista assinada e arquivada sem correr atrás</p></li>
+      <li><p>Parar de improvisar. Começar a conduzir.</p></li>
+    </ol>
+  </div>
+</section>
+
+<div class="faixa"></div>
+
+<!-- ═══ 10 · A DIFERENÇA ═══ -->
+<section class="sec sec--claro">
+  <div class="wrap wrap--largo">
+    <div class="medida-texto">
+      <span class="eyebrow">A diferença</span>
+      <h2 class="headline-arejada">A internet te dá o tema.<br>O 365 DDS <span class="headline-highlight">te entrega a fala</span>.</h2>
+      <p class="lead">Quando um site diz "fale sobre 5S" ou "fale sobre EPI", o trabalho continua sendo seu. Você ainda precisa pensar em como começar, que exemplo usar, o que perguntar e como encerrar. <b>No 365 DDS, isso já vem escrito.</b></p>
+    </div>
+
+    <div class="placa">
+      <div class="placa-cab">
+        <div><svg viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Lista de temas</div>
+        <div><svg viewBox="0 0 24 24" fill="none" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>365 DDS prontos</div>
+      </div>
+      <div class="placa-linha">
+        <div class="placa-col placa-col--fraca"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Recebe apenas o assunto</div>
+        <div class="placa-col placa-col--forte"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Recebe a fala completa</div>
+      </div>
+      <div class="placa-linha">
+        <div class="placa-col placa-col--fraca"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Precisa pesquisar e preparar</div>
+        <div class="placa-col placa-col--forte"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Abre e começa a conduzir</div>
+      </div>
+      <div class="placa-linha">
+        <div class="placa-col placa-col--fraca"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Tem que inventar uma introdução</div>
+        <div class="placa-col placa-col--forte"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Já vem com pergunta de abertura</div>
+      </div>
+      <div class="placa-linha">
+        <div class="placa-col placa-col--fraca"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Precisa buscar um exemplo</div>
+        <div class="placa-col placa-col--forte"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Já vem com um caso para apresentar</div>
+      </div>
+      <div class="placa-linha">
+        <div class="placa-col placa-col--fraca"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Tem que decidir o que perguntar</div>
+        <div class="placa-col placa-col--forte"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>A pergunta para a equipe já está pronta</div>
+      </div>
+      <div class="placa-linha">
+        <div class="placa-col placa-col--fraca"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Precisa criar um fechamento</div>
+        <div class="placa-col placa-col--forte"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Já vem com regra e conclusão</div>
+      </div>
+      <div class="placa-linha">
+        <div class="placa-col placa-col--fraca"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Procura um novo tema todo dia</div>
+        <div class="placa-col placa-col--forte"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>O DDS do dia já aparece na tela</div>
+      </div>
+      <div class="placa-linha">
+        <div class="placa-col placa-col--fraca"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Depende de páginas e links</div>
+        <div class="placa-col placa-col--forte"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Funciona no celular, mesmo sem internet</div>
+      </div>
+    </div>
+
+    <p class="frase-impacto">Você não precisa de mais uma ideia de tema. Precisa chegar na roda com o que vai dizer.</p>
+
+    <div class="cta-bloco">
+      <a href="#preco" class="cta">Quero os 365 DDS prontos</a>
+      <div class="selos">
+        <span class="selo"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Acesso imediato</span>
+        <span class="selo"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Pagamento único</span>
+        <span class="selo"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Garantia de 15 dias</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 11-12 · TUDO QUE VOCÊ RECEBE + BÔNUS ═══ -->
+<section class="sec">
+  <div class="wrap wrap--largo">
+    <div class="medida-texto">
+      <span class="eyebrow">Tudo o que você recebe</span>
+      <h2 class="headline-arejada">Um ano de DDS <span class="headline-highlight">pronto na tela</span> do seu celular</h2>
+      <p class="lead" style="margin-bottom:0">O DDS do dia já está ali. Você lê, conduz a conversa, registra e começa o turno.</p>
+    </div>
+
+    <div class="entrega-principal">
+      <div class="app-fone">
+        <div class="app-tela">
+          <div class="app-topo"></div>
+          <div class="app-corpo">
+            <div class="app-data"><span>Hoje</span><span>DDS 073/365</span></div>
+            <span class="app-tag">DDS DE HOJE · 10 MIN</span>
+            <div class="app-titulo">O atalho de 3 minutos</div>
+            <div class="app-secoes">
+              <p><b>Abertura</b>Quem já pensou "é rapidinho" antes de pular uma etapa?</p>
+              <p><b>O caso</b>Um trabalhador subiu num palete pra não buscar a escada.</p>
+              <p><b>A regra de hoje</b>Se o jeito seguro não está disponível, a tarefa não está pronta.</p>
+              <p><b>Pergunta pra turma</b>Qual é o atalho mais comum aqui?</p>
+              <p><b>Fechamento</b>Segurança é o jeito certo de começar.</p>
+            </div>
+            <div class="app-btn">Marcar como feito</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="entrega-info">
+        <span class="entrega-tag">Entrega principal</span>
+        <h3>365 DDS prontos</h3>
+        <p class="entrega-intro">O DDS de hoje já está na tela. Sem procurar tema, sem escrever roteiro e sem depender de sinal no canteiro.</p>
+
+        <div class="feat-lista">
+          <div class="feat-item">
+            <span class="feat-num">01</span>
+            <div><b>365 DDS completos</b><p>Um roteiro para cada dia do ano, pronto para ser lido em voz alta.</p></div>
+          </div>
+          <div class="feat-item">
+            <span class="feat-num">02</span>
+            <div><b>Estrutura pronta para conduzir</b><p>Abertura, caso, regra do dia, pergunta para a equipe e fechamento.</p></div>
+          </div>
+          <div class="feat-item">
+            <span class="feat-num">03</span>
+            <div><b>Abre direto no DDS do dia</b><p>O conteúdo previsto para aquela data já aparece na primeira tela.</p></div>
+          </div>
+          <div class="feat-item">
+            <span class="feat-num">04</span>
+            <div><b>Filtros quando você precisar</b><p>Pesquise por construção, indústria, logística, frota ou escritório e escolha DDS de 5, 10 ou 15 minutos.</p></div>
+          </div>
+          <div class="feat-item">
+            <span class="feat-num">05</span>
+            <div><b>Funciona sem internet</b><p>Depois da primeira vez, abre no canteiro, galpão, subsolo ou área externa, com ou sem sinal.</p></div>
+          </div>
+          <div class="feat-item">
+            <span class="feat-num">06</span>
+            <div><b>Histórico dos DDS realizados</b><p>Marque como concluído e consulte os DDS já conduzidos.</p></div>
+          </div>
+          <div class="feat-item">
+            <span class="feat-num">07</span>
+            <div><b>Acesso simples</b><p>Sem senha diária e sem precisar baixar pela loja. Só tocar no ícone salvo na tela do celular.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bonus-transicao">
+      <h3>No plano completo, você também recebe:</h3>
+      <p>Três materiais para os momentos em que o DDS do dia sozinho não resolve toda a operação.</p>
+    </div>
+
+    <div class="bonus-grid">
+      <article class="bonus2">
+        <div class="bonus2-topo">
+          <span class="bonus2-num">01</span>
+          <svg class="bonus2-icone" viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg>
+        </div>
+        <h3>Versão imprimível + listas de presença</h3>
+        <p>Os 365 DDS em PDF, com letra grande e um roteiro por página. Imprima, coloque na prancheta e leve para o campo. Inclui modelos de lista de presença para assinatura e arquivamento.</p>
+        <span class="bonus2-etiqueta">Incluído no completo</span>
+      </article>
+
+      <article class="bonus2">
+        <div class="bonus2-topo">
+          <span class="bonus2-num">02</span>
+          <svg class="bonus2-icone" viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <h3>30 DDS para situações críticas</h3>
+        <p>Roteiros prontos para os dias em que o calendário precisa ser interrompido: acidente, quase acidente, falha grave, desvio recorrente, dano a equipamento ou mudança de procedimento. Quando acontece alguma coisa, o DDS precisa tratar daquilo — esses 30 roteiros já deixam essa conversa preparada.</p>
+        <span class="bonus2-etiqueta">Incluído no completo</span>
+      </article>
+
+      <article class="bonus2">
+        <div class="bonus2-topo">
+          <span class="bonus2-num">03</span>
+          <svg class="bonus2-icone" viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        </div>
+        <h3>Guia rápido de condução</h3>
+        <p>O que fazer quando ninguém responde, como puxar participação sem constranger a equipe, lidar com interrupções e fechar o DDS no tempo certo. Uma página para consultar antes de entrar na roda.</p>
+        <span class="bonus2-etiqueta">Incluído no completo</span>
+      </article>
+    </div>
+
+    <p class="frase-impacto">Você recebe o roteiro diário, a versão para o campo e o material para os dias fora do planejado.</p>
+
+    <div class="cta-bloco">
+      <a href="#preco" class="cta">Quero o plano completo por R$27,90</a>
+      <p class="cta-nota">Pagamento único · Acesso vitalício · Garantia de 15 dias</p>
+    </div>
+  </div>
+</section>
+
+<div class="faixa"></div>
+
+<!-- ═══ 13 · DEPOIMENTOS ═══ -->
+<section class="sec sec--claro">
+  <div class="wrap">
+    <span class="eyebrow">Quem já testou conta</span>
+    <h2>O que dizem quem usa</h2>
+    <p class="lead" style="margin-top:-4px">Quem já usa no dia a dia conta como foi:</p>
+  </div>
+
+  <div class="depo-carrossel" id="depoCarrossel">
+    <button class="depo-pausa" id="depoPausa" type="button" aria-pressed="false"><span id="depoPausaTexto">Pausar</span></button>
+    <div class="depo-trilho">
+      <article class="depo-card">
+        <p>"Antes eu tinha o tema, mas ainda precisava parar para pensar em como começar e o que perguntar. Agora eu abro o DDS do dia e a condução já está pronta."</p>
+        <div class="depo-quem"><b>Carlos — Técnico de Segurança do Trabalho</b>Indústria</div>
+      </article>
+      <article class="depo-card">
+        <p>"O que mais me ajudou foi não precisar inventar assunto na hora. O texto é direto, dá para ler na frente da equipe e não tem aquele jeito de palestra."</p>
+        <div class="depo-quem"><b>Marcelo — Mestre de obras</b>Construção civil</div>
+      </article>
+      <article class="depo-card">
+        <p>"Uso direto pelo celular antes do turno. A abertura ajuda a turma a participar e o caso deixa o assunto muito mais fácil de entender."</p>
+        <div class="depo-quem"><b>Renato — Supervisor de centro de distribuição</b>Armazém e logística</div>
+      </article>
+      <article class="depo-card">
+        <p>"Eu sempre acabava repetindo os mesmos temas. Com os DDS prontos, consigo variar o assunto sem precisar pesquisar e montar tudo de novo."</p>
+        <div class="depo-quem"><b>João — Encarregado de produção</b>Indústria</div>
+      </article>
+      <!-- duplicado pra rolagem contínua sem emenda -->
+      <article class="depo-card" aria-hidden="true">
+        <p>"Antes eu tinha o tema, mas ainda precisava parar para pensar em como começar e o que perguntar. Agora eu abro o DDS do dia e a condução já está pronta."</p>
+        <div class="depo-quem"><b>Carlos — Técnico de Segurança do Trabalho</b>Indústria</div>
+      </article>
+      <article class="depo-card" aria-hidden="true">
+        <p>"O que mais me ajudou foi não precisar inventar assunto na hora. O texto é direto, dá para ler na frente da equipe e não tem aquele jeito de palestra."</p>
+        <div class="depo-quem"><b>Marcelo — Mestre de obras</b>Construção civil</div>
+      </article>
+      <article class="depo-card" aria-hidden="true">
+        <p>"Uso direto pelo celular antes do turno. A abertura ajuda a turma a participar e o caso deixa o assunto muito mais fácil de entender."</p>
+        <div class="depo-quem"><b>Renato — Supervisor de centro de distribuição</b>Armazém e logística</div>
+      </article>
+      <article class="depo-card" aria-hidden="true">
+        <p>"Eu sempre acabava repetindo os mesmos temas. Com os DDS prontos, consigo variar o assunto sem precisar pesquisar e montar tudo de novo."</p>
+        <div class="depo-quem"><b>João — Encarregado de produção</b>Indústria</div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 14 · ESCASSEZ ═══ -->
+<section class="sec sec--aco">
+  <div class="wrap">
+    <div class="timer">
+      <div class="rot">Oferta por tempo limitado</div>
+      <div class="conta" id="conta">10:00</div>
+      <p class="txt">Garante o seu antes que encerre.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 15 · PREÇO ═══ -->
+<section class="sec sec--claro" id="preco">
+  <div class="wrap">
+    <span class="eyebrow">Oferta única</span>
+    <h2 class="headline-arejada">Tudo o que você precisa para o <span class="headline-highlight">DDS do ano inteiro</span></h2>
+    <p class="lead">365 roteiros completos, aplicativo offline, versão para imprimir, DDS de crise e guia de condução.</p>
+
+    <div class="plano plano--top">
+      <h3>Plano completo</h3>
+      <p class="plano-sub">365 DDS + 3 bônus</p>
+      <img class="heroi-mockup" src="images/mockup.png" width="1448" height="1086" alt="365 DDS Prontos: celular mostrando o DDS do dia, o livro 365 DDS Prontos e cards de exemplo de diálogos de segurança" style="margin:16px auto 22px">
+      <div class="plano-valor"><span class="v">R$27,90</span></div>
+      <p class="plano-cond">à vista ou 12x de R$2,79 · pagamento único · acesso imediato</p>
+      <ul class="check">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Os 365 DDS completos</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Abre já no DDS do dia</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Funciona sem internet</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Filtro por setor e por tempo</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Histórico e exportação pra auditoria</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Bônus 1: Versão imprimível pra levar pro campo</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Bônus 2: 30 DDS de crise</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Bônus 3: Guia de condução em 1 página</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Garantia de 15 dias</li>
+      </ul>
+      <a href="#" class="cta">Quero o plano completo por R$27,90</a>
+    </div>
+
+    <p class="ancora">Preparar um DDS na mão toma tempo todo santo dia. Contratar treinamento externo custa a partir de R$800 por turma. Isso aqui resolve o ano inteiro por R$27,90.</p>
+  </div>
+</section>
+
+<!-- ═══ 16 · GARANTIA ═══ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="garantia">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+      <h2 class="headline-arejada">Garantia incondicional de <span class="headline-highlight">15 dias</span></h2>
+      <p>Compra, usa 15 dias, faz DDS a semana inteira. Se não for pra você, devolvemos o dinheiro. Sem pergunta, sem burocracia.</p>
+      <span class="forte">O risco é todo nosso</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 17 · FAQ ═══ -->
+<section class="sec sec--claro">
+  <div class="wrap">
+    <span class="eyebrow">Perguntas</span>
+    <h2>Respondendo o que você tá pensando agora</h2>
+
+    <div class="faq" style="margin-top:22px">
+      <details open>
+        <summary>Funciona sem internet?</summary>
+        <p>Funciona. Você instala uma vez, com sinal, e depois abre em qualquer lugar. Canteiro sem sinal, subsolo, galpão, área externa. Os 365 ficam guardados no celular. Se dependesse de internet pra abrir às 6h50, o produto não serviria pra nada e a gente sabe disso.</p>
+      </details>
+      <details>
+        <summary>Preciso de senha? Como eu acesso?</summary>
+        <p>Não tem senha. Depois da compra você recebe um link, abre, e um botão coloca o ícone na tela do seu celular igual a qualquer app. Da próxima vez é só tocar no ícone. Sem cadastro, sem login, sem "esqueci minha senha".</p>
+      </details>
+      <details>
+        <summary>E se eu preferir imprimir?</summary>
+        <p>No plano completo vem a versão imprimível, um DDS por folha e letra grande, pra você guardar na prancheta e levar pro campo. A lista de presença já vem junto, pronta pra assinar.</p>
+      </details>
+      <details>
+        <summary>Serve pro meu setor?</summary>
+        <p>Os 365 são separados por setor: construção, indústria, armazém e logística, frota e transporte, escritório. Tem um bloco que serve pra qualquer operação e blocos específicos por área. Você filtra e só aparece o que é da sua realidade.</p>
+      </details>
+      <details>
+        <summary>A lista de presença serve pra auditoria?</summary>
+        <p>Serve como registro do DDS que você conduziu: data, tema, setor e assinatura de quem participou. O app ainda guarda o histórico do que foi feito e exporta em planilha, que é o que costumam pedir quando bate auditoria ou quando o RH cobra comprovação.</p>
+      </details>
+      <details>
+        <summary>Quanto tempo eu tenho de acesso?</summary>
+        <p>Vitalício. Pagou uma vez, é seu. Não é assinatura, não renova, não cobra de novo mês que vem.</p>
+      </details>
+      <details>
+        <summary>Posso parcelar?</summary>
+        <p>Pode. No cartão dá pra dividir em até 12x. No Pix o acesso libera na hora.</p>
+      </details>
+      <details>
+        <summary>E se eu não gostar?</summary>
+        <p>Você tem 15 dias. Usa, testa na roda, vê a turma responder. Se não servir, pede o dinheiro de volta e devolvemos. Sem pergunta.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 18 · CTA FINAL ═══ -->
+<section class="fecho">
+  <div class="wrap">
+    <h2>Amanhã de manhã tem DDS.</h2>
+    <p>A pergunta é só se você vai chegar lá com o texto na mão.</p>
+    <a href="#preco" class="cta">Quero meu DDS pronto</a>
+  </div>
+</section>
+
+<!-- ═══ 19 · RODAPÉ ═══ -->
+<footer class="rodape">
+  <div class="wrap">
+    <p>365 DDS © 2026</p>
+    <nav>
+      <a href="#">Política de privacidade</a>
+      <a href="#">Termos</a>
+      <a href="#">Contato</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var el = document.getElementById('conta');
+  if(!el) return;
+  var t = 600;
+  setInterval(function(){
+    if(t <= 0) return;
+    t--;
+    var m = String(Math.floor(t/60)).padStart(2,'0');
+    var s = String(t%60).padStart(2,'0');
+    el.textContent = m + ':' + s;
+  }, 1000);
+})();
+
+(function(){
+  var carrossel = document.getElementById('depoCarrossel');
+  var botao = document.getElementById('depoPausa');
+  var texto = document.getElementById('depoPausaTexto');
+  if(!carrossel || !botao) return;
+  botao.addEventListener('click', function(){
+    var pausado = carrossel.classList.toggle('pausado');
+    botao.setAttribute('aria-pressed', pausado ? 'true' : 'false');
+    texto.textContent = pausado ? 'Retomar' : 'Pausar';
+  });
+})();
+
+(function(){
+  var botao = document.getElementById('ddsVerMais');
+  var texto = document.getElementById('ddsVerMaisTexto');
+  if(!botao) return;
+  var corpo = botao.closest('.dds-corpo');
+  botao.addEventListener('click', function(){
+    var aberto = corpo.classList.toggle('aberto');
+    botao.setAttribute('aria-expanded', aberto ? 'true' : 'false');
+    texto.textContent = aberto ? 'Ver menos' : 'Ver DDS completo';
+    if(!aberto){
+      corpo.querySelector('.dds-conteudo').scrollIntoView({block:'start',behavior:'smooth'});
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
