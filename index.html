@@ -878,7 +878,7 @@ a:focus-visible,summary:focus-visible,button:focus-visible{outline:3px solid var
         <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Bônus 3: Guia de condução em 1 página</li>
         <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Garantia de 15 dias</li>
       </ul>
-      <a href="#" class="cta">Quero o plano completo por R$27,90</a>
+      <a href="https://pay.wiapy.com/6NTSNK_BfIqQ" class="cta cta-checkout">Quero o plano completo por R$27,90</a>
     </div>
 
     <p class="ancora">Preparar um DDS na mão toma tempo todo santo dia. Contratar treinamento externo custa a partir de R$800 por turma. Isso aqui resolve o ano inteiro por R$27,90.</p>
@@ -999,6 +999,16 @@ a:focus-visible,summary:focus-visible,button:focus-visible{outline:3px solid var
     if(!aberto){
       corpo.querySelector('.dds-conteudo').scrollIntoView({block:'start',behavior:'smooth'});
     }
+  });
+})();
+
+(function(){
+  var links = document.querySelectorAll('.cta-checkout');
+  links.forEach(function(link){
+    link.addEventListener('click', function(e){
+      e.preventDefault();
+      window.location.href = link.getAttribute('href') + window.location.search;
+    });
   });
 })();
 </script>
